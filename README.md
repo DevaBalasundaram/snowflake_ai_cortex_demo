@@ -4,7 +4,7 @@ A comprehensive guide and demo application for getting started with **Snowflake 
 
 ![Cortex Analyst Demo](assets/cortex-flow.png)
 
-## 🚀 Quick Start
+## Quick Start
 
 This repository contains everything you need to set up and demo both Snowflake Cortex Analyst and Cortex AI functions:
 
@@ -15,7 +15,7 @@ This repository contains everything you need to set up and demo both Snowflake C
 - **Comprehensive documentation** and presentation materials
 - **Real sample data** for revenue analytics and text processing use cases
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 ├── README.md                          # This file
@@ -27,8 +27,8 @@ This repository contains everything you need to set up and demo both Snowflake C
 │   ├── 01_create_objects.sql         # Core Cortex Analyst setup
 │   ├── 02_load_data.sql              # Revenue data loading
 │   ├── 03_create_search.sql          # Search services setup
-│   ├── 04_cortex_functions.sql       # 🆕 AI functions demo
-│   └── 05_cortex_ai_setup.sql        # 🆕 AI functions data setup
+│   ├── 04_cortex_functions.sql       # AI functions demo
+│   └── 05_cortex_ai_setup.sql        # AI functions data setup
 ├── data/                             # Sample data files
 │   ├── daily_revenue.csv             # Revenue facts data
 │   ├── product.csv                   # Product dimension
@@ -41,7 +41,7 @@ This repository contains everything you need to set up and demo both Snowflake C
 └── LICENSE
 ```
 
-## 🎯 What's Included?
+## What's Included?
 
 ### Cortex Analyst (Natural Language to SQL)
 **Cortex Analyst** is a fully managed conversational AI service in Snowflake that provides:
@@ -67,7 +67,7 @@ This repository contains everything you need to set up and demo both Snowflake C
 - **Permissions**: CORTEX_USER role (granted to PUBLIC by default)
 - **Supported Region**: AWS (us-east-1, us-west-2, eu-west-1, eu-central-1, ap-southeast-2, ap-northeast-1) or Azure (East US 2, West Europe)
 
-## ⚡ Quick Setup Options
+## Quick Setup Options
 
 ### Option 1: Cortex Analyst Only (15 minutes)
 For natural language to SQL capabilities:
@@ -97,7 +97,7 @@ For text processing capabilities only:
 1. Execute: `sql/05_cortex_ai_setup.sql` - Sets up sample text data
 2. Execute: `sql/04_cortex_functions.sql` - Run AI function examples
 
-## 📊 Demo Use Cases
+## Demo Use Cases
 
 ### 1. Revenue Analytics (Cortex Analyst)
 **Natural language queries on business data:**
@@ -132,7 +132,7 @@ For text processing capabilities only:
 • Count tokens for cost estimation and optimization
 ```
 
-## 💰 Cost Considerations
+## Cost Considerations
 
 **Cortex Analyst Pricing (2025):**
 - **Token-based pricing**: ~$0.002 per 1K input tokens, ~$0.008 per 1K output tokens
@@ -150,7 +150,7 @@ For text processing capabilities only:
 - Use `COUNT_TOKENS` function for cost estimation
 - Set up resource monitors for budget control
 
-## 🎓 Learning Path
+## Learning Path
 
 ### Beginner (Start here)
 1. **Follow Option 2 setup** for complete experience
@@ -170,7 +170,7 @@ For text processing capabilities only:
 3. **Advanced prompt engineering** for custom completions
 4. **Production deployment** with security and monitoring
 
-## 📋 Presentation Materials
+## Presentation Materials
 
 Ready to demo to your team? We've included:
 
@@ -183,7 +183,7 @@ Ready to demo to your team? We've included:
 
 Perfect for capability showcases, lunch & learns, or executive demos.
 
-## 🔧 What's New - AI Functions Demo
+##  What's New - AI Functions Demo
 
 ### Comprehensive Examples Include:
 - **Translation Workflows**: Single text, batch processing, business use cases
@@ -200,7 +200,7 @@ Perfect for capability showcases, lunch & learns, or executive demos.
 - **Business Documents**: Realistic meeting notes and reports
 - **Customer Feedback**: Authentic product reviews with varying sentiment
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Please see our contributing guidelines:
 
@@ -209,7 +209,7 @@ We welcome contributions! Please see our contributing guidelines:
 3. Add tests for new functionality  
 4. Submit a pull request
 
-## 📚 Additional Resources
+## Additional Resources
 
 ### Cortex Analyst Resources:
 - [Snowflake Cortex Documentation](https://docs.snowflake.com/en/user-guide/snowflake-cortex)
@@ -221,11 +221,11 @@ We welcome contributions! Please see our contributing guidelines:
 - [LLM Function Reference](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions)
 - [Supported Languages List](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translation)
 
-## 📜 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🏷️ Tags
+##  Tags
 
 `snowflake` `cortex-analyst` `cortex-ai` `llm` `natural-language` `sql` `analytics` `translation` `sentiment-analysis` `summarization` `self-service` `business-intelligence` `conversational-ai`
 
