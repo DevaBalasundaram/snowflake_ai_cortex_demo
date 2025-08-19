@@ -1,1 +1,0 @@
-# snowflake_ai_cortex_demo
