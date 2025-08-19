@@ -1,0 +1,186 @@
+# Semantic Model for Revenue Timeseries Analysis
+# This YAML file defines the business logic and data structure for Cortex Analyst
+
+name: "Revenue Analysis"
+description: "Comprehensive semantic model for revenue and sales analysis across products and regions"
+
+# Define logical tables that Cortex Analyst can query
+tables:
+  # Main fact table containing daily revenue metrics
+  - name: daily_revenue
+    base_table: cortex_analyst_demo.revenue_timeseries.daily_revenue
+    description: "Daily revenue facts by product and region with costs and forecasts"
+    
+    # Time dimensions for temporal analysis
+    time_dimensions:
+      - name: date
+        expr: date
+        description: "Transaction date for revenue, costs, and forecasts"
+        data_type: date
+        unique: false
+    
+    # Quantitative measures for analysis
+    measures:
+      - name: daily_revenue
+        expr: revenue
+        description: "Total revenue for the given day"
+        synonyms: ["sales", "income", "total sales"]
+        default_aggregation: sum
+        data_type: number
+        
+      - name: cost_of_goods_sold
+        expr: cogs
+        description: "Cost of goods sold (COGS) - direct costs"
+        synonyms: ["cogs", "costs", "expenses", "direct costs"]
+        default_aggregation: sum
+        data_type: number
+        
+      - name: forecasted_revenue
+        expr: forecasted_revenue
+        description: "Predicted revenue amount based on forecasting models"
+        synonyms: ["forecast", "predicted sales", "projected revenue"]
+        default_aggregation: sum
+        data_type: number
+        
+      - name: daily_profit
+        expr: revenue - cogs
+        description: "Daily profit calculated as revenue minus cost of goods sold"
+        synonyms: ["profit", "net income", "earnings", "margin dollars"]
+        default_aggregation: sum
+        data_type: number
+        
+      - name: profit_margin
+        expr: (revenue - cogs) / revenue * 100
+        description: "Profit margin percentage - profit divided by revenue"
+        synonyms: ["margin percent", "profitability", "profit rate"]
+        default_aggregation: avg
+        data_type: number
+        
+      - name: forecast_accuracy
+        expr: ABS(revenue - forecasted_revenue) / revenue * 100
+        description: "Forecast accuracy as percentage difference between actual and forecasted"
+        synonyms: ["forecast error", "prediction accuracy"]
+        default_aggregation: avg
+        data_type: number
+
+  # Product dimension table
+  - name: product_dim
+    base_table: cortex_analyst_demo.revenue_timeseries.product_dim
+    description: "Product dimension containing product categories and lines"
+    
+    dimensions:
+      - name: product_line
+        expr: product_line
+        description: "Product category or line of business"
+        data_type: varchar
+        unique: false
+        sample_values: ["Electronics", "Clothing", "Home Appliances", "Books", "Toys"]
+
+  # Region dimension table  
+  - name: region_dim
+    base_table: cortex_analyst_demo.revenue_timeseries.region_dim
+    description: "Region dimension containing sales territories and geographic information"
+    
+    dimensions:
+      - name: sales_region
+        expr: sales_region
+        description: "Sales region or territory"
+        synonyms: ["region", "territory", "area"]
+        data_type: varchar
+        unique: false
+        sample_values: ["North", "South", "East", "West"]
+        
+      - name: state
+        expr: state
+        description: "State or province within the sales region"
+        synonyms: ["province", "location"]
+        data_type: varchar
+        unique: false
+        sample_values: ["California", "Texas", "New York", "Oregon"]
+
+# Define relationships between tables (star schema)
+relationships:
+  - name: revenue_to_product
+    left_table: daily_revenue
+    right_table: product_dim
+    relationship_columns:
+      - left_column: product_id
+        right_column: product_id
+    join_type: left_outer
+    relationship_type: many_to_one
+    
+  - name: revenue_to_region
+    left_table: daily_revenue  
+    right_table: region_dim
+    relationship_columns:
+      - left_column: region_id
+        right_column: region_id
+    join_type: left_outer
+    relationship_type: many_to_one
+
+# Verified queries for improved accuracy
+verified_queries:
+  - name: "total_revenue_by_product_line"
+    question: "What is the total revenue by product line?"
+    sql: |
+      SELECT 
+        p.product_line,
+        SUM(r.revenue) as total_revenue
+      FROM daily_revenue r
+      JOIN product_dim p ON r.product_id = p.product_id
+      GROUP BY p.product_line
+      ORDER BY total_revenue DESC
+    verified_at: 1692364800
+    verified_by: "Demo User"
+    
+  - name: "monthly_revenue_trends" 
+    question: "Show me monthly revenue trends"
+    sql: |
+      SELECT 
+        DATE_TRUNC('MONTH', date) as month,
+        SUM(revenue) as monthly_revenue,
+        SUM(cogs) as monthly_costs,
+        SUM(revenue - cogs) as monthly_profit
+      FROM daily_revenue
+      GROUP BY DATE_TRUNC('MONTH', date)
+      ORDER BY month DESC
+    verified_at: 1692364800
+    verified_by: "Demo User"
+    
+  - name: "best_performing_product_by_margin"
+    question: "Which product line has the highest profit margin?"
+    sql: |
+      SELECT 
+        p.product_line,
+        SUM(r.revenue - r.cogs) / SUM(r.revenue) * 100 as profit_margin_percent,
+        SUM(r.revenue - r.cogs) as total_profit,
+        SUM(r.revenue) as total_revenue
+      FROM daily_revenue r
+      JOIN product_dim p ON r.product_id = p.product_id
+      GROUP BY p.product_line
+      ORDER BY profit_margin_percent DESC
+    verified_at: 1692364800
+    verified_by: "Demo User"
+    
+  - name: "regional_performance_comparison"
+    question: "Compare revenue performance across regions"
+    sql: |
+      SELECT 
+        rd.sales_region,
+        rd.state,
+        SUM(dr.revenue) as total_revenue,
+        AVG(dr.revenue) as avg_daily_revenue,
+        SUM(dr.revenue - dr.cogs) as total_profit
+      FROM daily_revenue dr
+      JOIN region_dim rd ON dr.region_id = rd.region_id
+      GROUP BY rd.sales_region, rd.state
+      ORDER BY total_revenue DESC
+    verified_at: 1692364800
+    verified_by: "Demo User"
+
+# Search services for improved literal matching
+search_services:
+  - name: product_line_search_service
+    description: "Search service for finding product line variations"
+  - name: sales_region_search_service  
+    description: "Search service for finding sales region and state variations"
